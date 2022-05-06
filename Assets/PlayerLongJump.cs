@@ -7,12 +7,8 @@ public class PlayerLongJump : MonoBehaviour
     private float Horizontal = 0.0f;
 
     [SerializeField] private float JumpSpeed = 1f;
-    private float JumpTime = 0;
-    private float MaxJumpTime = 0.25f;
-
     //flag
     private bool IsGrounded = false;
-    private bool IsJumpUp = false;
 
     //vector3
 
@@ -34,23 +30,7 @@ public class PlayerLongJump : MonoBehaviour
         { 
             if(Input.GetButtonDown("Jump"))
             {
-                Rb.velocity = Vector2.up * JumpSpeed/2;
-            }
-
-            IsJumpUp = false;
-            JumpTime = 0.0f;
-        }
-        else
-        {
-            if(Input.GetButton("Jump") && JumpTime < MaxJumpTime && !IsJumpUp)
-            {
-                JumpTime += Time.deltaTime;
                 Rb.velocity = Vector2.up * JumpSpeed;
-            }
-
-            if(Input.GetButtonUp("Jump") && !IsJumpUp)
-            {
-                IsJumpUp = true;
             }
         }
     }
@@ -60,15 +40,16 @@ public class PlayerLongJump : MonoBehaviour
         Rb.velocity = new Vector2(Horizontal * Speed, Rb.velocity.y);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Ground"))
         {
             IsGrounded = true;
+            Debug.Log("’n–ÊÝ’u");
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Ground"))
         {
