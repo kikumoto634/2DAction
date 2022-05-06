@@ -68,4 +68,12 @@ public class PlayerLongJump : MonoBehaviour
             IsGrounded = false;
         }
     }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            IsGrounded = true;
+        }
+    }
 }

@@ -13,6 +13,6 @@ public class CameraTracking : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.position = new Vector3(PlayerTransform.position.x, transform.position.y, transform.position.z);
+        transform.position = new Vector3(PlayerTransform.position.x, PlayerTransform.position.y, transform.position.z);
     }
 }
