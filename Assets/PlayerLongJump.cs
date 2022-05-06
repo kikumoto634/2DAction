@@ -59,7 +59,7 @@ public class PlayerLongJump : MonoBehaviour
         Rb.velocity = new Vector2(Horizontal * Speed, Rb.velocity.y);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Ground"))
         {
@@ -69,7 +69,7 @@ public class PlayerLongJump : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Ground"))
         {
