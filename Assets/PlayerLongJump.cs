@@ -10,6 +10,8 @@ public class PlayerLongJump : MonoBehaviour
     [SerializeField]private float MaxJumpTime = 1f;
 
     [SerializeField] private float JumpSpeed = 1f;
+
+    [SerializeField] private float FallSpeed = -25.0f;
     //flag
     private bool IsGrounded = false;
     private bool IsJumpEnd = false;
@@ -18,6 +20,9 @@ public class PlayerLongJump : MonoBehaviour
 
     //Component
     Rigidbody2D Rb = null;
+
+    //parent
+    private GameObject emptyObject = null;
 
     private void Start()
     {
@@ -51,7 +56,14 @@ public class PlayerLongJump : MonoBehaviour
             {
                 IsJumpEnd = true;
             }
+
+            if(Rb.velocity.y < FallSpeed)
+            {
+                Rb.velocity = new Vector2(Rb.velocity.x, FallSpeed);
+                Debug.Log("許容オーバー");
+            }
         }
+        //Debug.Log(Rb.velocity.y);
     }
 
     private void FixedUpdate()
@@ -66,6 +78,14 @@ public class PlayerLongJump : MonoBehaviour
             JumpTime = 0.0f;
             IsJumpEnd = false;
             IsGrounded = false;
+
+            if(transform.parent == null)
+            {
+                emptyObject = new GameObject();
+                emptyObject.name = "PlayerParent";
+                emptyObject.transform.parent = collision.gameObject.transform;
+                transform.parent = emptyObject.transform;
+            }
         }
     }
 
@@ -74,6 +94,12 @@ public class PlayerLongJump : MonoBehaviour
         if(collision.gameObject.CompareTag("Ground"))
         {
             IsGrounded = true;
+
+            if(transform.parent != null)
+            {
+                transform.parent = null;
+                Destroy(emptyObject);
+            }
         }
     }
 }
