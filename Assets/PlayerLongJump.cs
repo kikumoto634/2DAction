@@ -15,11 +15,12 @@ public class PlayerLongJump : MonoBehaviour
     //flag
     private bool IsGrounded = false;
     private bool IsJumpEnd = false;
+    private bool IsFlip = false;
 
-    //vector3
 
     //Component
     Rigidbody2D Rb = null;
+    SpriteRenderer Sr = null;
 
     //parent
     private GameObject emptyObject = null;
@@ -27,15 +28,29 @@ public class PlayerLongJump : MonoBehaviour
     private void Start()
     {
         Rb = GetComponent<Rigidbody2D>();
+        Sr = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
+        if(Horizontal >= 0.01f)
+        {
+            IsFlip = true;
+        }
+        else if(Horizontal <= -0.01f)
+        {
+            IsFlip = false;
+        }
+        Sr.flipX = IsFlip;
+    }
+
+    private void FixedUpdate()
+    {
         //移動
         Horizontal = Input.GetAxis("Horizontal");
+        Rb.velocity = new Vector2(Horizontal * Speed, Rb.velocity.y);
 
         //地面判定+ジャンプ
-
         if(!IsGrounded)
         {
             if(Input.GetButtonDown("Jump") && !IsJumpEnd)
@@ -60,15 +75,8 @@ public class PlayerLongJump : MonoBehaviour
             if(Rb.velocity.y < FallSpeed)
             {
                 Rb.velocity = new Vector2(Rb.velocity.x, FallSpeed);
-                Debug.Log("許容オーバー");
             }
         }
-        //Debug.Log(Rb.velocity.y);
-    }
-
-    private void FixedUpdate()
-    {
-        Rb.velocity = new Vector2(Horizontal * Speed, Rb.velocity.y);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
